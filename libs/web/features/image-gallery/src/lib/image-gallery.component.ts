@@ -57,12 +57,17 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
 
   public imageListSubscription$!: Subscription;
 
+  public loading = true;
+
   private loadMoreCounter = 0;
   public page = 1;
   public limit = 5;
   public thumbnailWidth = 419;
   public thumbnailHeight = 280;
   public appendImages = false;
+
+  public limitOptions = [3, 5, 10, 25, 100];
+  public pageOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(
     private imageService: ImageService,
@@ -82,6 +87,8 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         this.imageList = this.imageList.sort((a, b) =>
           a.id.localeCompare(b.id)
         );
+
+        this.loading = false;
       }
     );
   }
@@ -123,6 +130,8 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     appendImages: boolean = false,
     loadCount: number = this.loadMoreCounter
   ) {
+    this.loading = true;
+
     this.appendImages = appendImages;
 
     for (let index = loadCount; index <= this.loadMoreCounter; index++) {
@@ -174,6 +183,36 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     }
     this.loadMoreCounter = 0;
 
+    this.loadImages(false, 0);
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: this.page,
+        limit: this.limit,
+        load: this.loadMoreCounter,
+      },
+      queryParamsHandling: 'merge', // remove to replace all query params by provided
+    });
+  }
+
+  public onChangeLimit(newLimit: number) {
+    this.limit = newLimit;
+    this.loadImages(false, 0);
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: this.page,
+        limit: this.limit,
+        load: this.loadMoreCounter,
+      },
+      queryParamsHandling: 'merge', // remove to replace all query params by provided
+    });
+  }
+
+  public onChangePage(newPage: number) {
+    this.page = newPage;
     this.loadImages(false, 0);
 
     this.router.navigate([], {

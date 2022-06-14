@@ -80,6 +80,7 @@
         class="col"
         tabindex="0"
         (keyup.enter)="viewImage(imageInfo, i)"
+        (keyup.space)="viewImage(imageInfo, i)"
         (focus)="onItemFocus(imageInfo)"
         (focusout)="offItemFocus(imageInfo)"
       >
@@ -94,7 +95,7 @@
       </div>
     </div>
 
-    <div class="row row-cols-auto justify-content-center g-3 mt-3">
+    <div class="row row-cols-auto justify-content-center g-3 mt-2">
       <div class="col-12">
         <div
           class="row row-cols-auto justify-content-center align-items-end g-3"

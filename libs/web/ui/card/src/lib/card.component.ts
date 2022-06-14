@@ -68,6 +68,7 @@ export class CardComponent implements OnChanges {
   @Input() useAnimation: boolean = false;
   @Input() imageLoading: boolean = true;
   @Input() focused: boolean = false;
+  @Input() showInfo: boolean = false;
 
   @Output() click: EventEmitter<any> = new EventEmitter<any>();
   onClick(e: any) {

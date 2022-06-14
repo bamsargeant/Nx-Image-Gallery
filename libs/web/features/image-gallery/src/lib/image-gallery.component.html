@@ -1,4 +1,7 @@
-<div *ngIf="loading; else content" class="d-flex justify-content-center py-3">
+<div
+  *ngIf="loading; else content"
+  class="d-flex justify-content-center py-3 h-100 align-items-center"
+>
   <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
@@ -18,7 +21,7 @@
           </div>
           <div class="col">
             <button type="button" class="btn btn-colour" (click)="loadMore()">
-              Load More
+              Load More Images
             </button>
           </div>
           <div class="col">
@@ -26,6 +29,7 @@
               Next
             </button>
           </div>
+
           <div class="col">
             <label for="limitSelect" class="d-inline-block pl-1 semi-bold"
               >Limit</label
@@ -69,18 +73,29 @@
       class="row row-cols-auto justify-content-center g-4 g-lg-3"
       [@listAnimation]="imageList.length"
     >
-      <div *ngFor="let imageInfo of imageList" class="col">
+      <div
+        *ngFor="let imageInfo of imageList; let i = index"
+        [attr.data-index]="'image-card-' + i"
+        [attr.id]="'image-card-' + i"
+        class="col"
+        tabindex="0"
+        (keyup.enter)="viewImage(imageInfo, i)"
+        (keyup.space)="viewImage(imageInfo, i)"
+        (focus)="onItemFocus(imageInfo)"
+        (focusout)="offItemFocus(imageInfo)"
+      >
         <stackblitz-nx-angular-card
           [path]="imageInfo.thumbnail_url"
           [imgInfo]="imageInfo"
-          (click)="viewImage(imageInfo)"
+          (click)="viewImage(imageInfo, i)"
           class="cursor-pointer"
           [useAnimation]="true"
+          [focused]="imageInfo?.focused ?? false"
         ></stackblitz-nx-angular-card>
       </div>
     </div>
 
-    <div class="row row-cols-auto justify-content-center g-3 mt-3">
+    <div class="row row-cols-auto justify-content-center g-3 mt-2">
       <div class="col-12">
         <div
           class="row row-cols-auto justify-content-center align-items-end g-3"

@@ -6,7 +6,8 @@
 >
   <img
     [src]="path"
-    [alt]="alttext"
+    alt="Photo by {{ imgInfo?.author }} - Id {{ imgInfo?.id }}"
+    title="Photo by {{ imgInfo?.author }} - Id {{ imgInfo?.id }}"
     class="card-img-top"
     (load)="imageLoading = false"
   />
@@ -19,11 +20,12 @@
         <h5 class="card-title text-end">{{ imgInfo.id }}</h5>
       </div>
     </div>
-    <!-- <p class="card-text">
-    {{imgInfo.author}}
-    {{imgInfo.width}} x {{imgInfo.height}}
-    {{imgInfo.url}}
-    {{imgInfo.download_url}}
-  </p> -->
+    <p *ngIf="showInfo" class="card-text">
+      <strong>Dimensions:</strong> {{ imgInfo.width }} x {{ imgInfo.height }}
+      <br />
+      <a href="{{ imgInfo.url }}"
+        ><span *ngIf="!imageLoading">Original Url</span></a
+      >
+    </p>
   </div>
 </div>

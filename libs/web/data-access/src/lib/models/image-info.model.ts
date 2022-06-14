@@ -6,4 +6,5 @@ export interface ImageInfo {
   url: string;
   download_url: string;
   thumbnail_url: string;
+  focused: boolean;
 }

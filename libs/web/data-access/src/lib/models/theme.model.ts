@@ -34,8 +34,20 @@ export const light: Theme = {
     '--slide-toggle-background-colour': '#15273b',
     '--slide-toggle-background-colour-selected': '#ccc',
 
-    '--btn-text-colour': '#08090A',
-    '--btn-background-colour': '#ccc',
+    '--btn-text-colour': '#FFFFFF',
+    '--btn-background-colour': '#3277B3',
+
+    '--main-background-default': '#FFFFFF',
+    '--banner-background-default': '#DEE4E7',
+    '--footer-background-default': '#DEE4E7',
+    '--card-background-default': '#DEE4E7',
+
+    '--banner-header-colour-default': '#222222',
+    '--card-text-colour-default': '#222222',
+    '--footer-text-colour-default': '#222222',
+
+    '--header-height': '4.8rem',
+    '--footer-height': '6rem',
   },
 };
 
@@ -70,7 +82,19 @@ export const dark: Theme = {
     '--slide-toggle-background-colour': '#ccc',
     '--slide-toggle-background-colour-selected': '#15273b',
 
-    '--btn-text-colour': '#ccc',
-    '--btn-background-colour': '#08090A',
+    '--btn-text-colour': '#FFFFFF',
+    '--btn-background-colour': '#276d89',
+
+    '--main-background-default': '#222222',
+    '--banner-background-default': '#37474F',
+    '--footer-background-default': '#37474F',
+    '--card-background-default': '#37474F',
+
+    '--banner-header-colour-default': '#FFFFFF',
+    '--card-text-colour-default': '#FFFFFF',
+    '--footer-text-colour-default': '#FFFFFF',
+
+    '--header-height': '4.8rem',
+    '--footer-height': '6rem',
   },
 };

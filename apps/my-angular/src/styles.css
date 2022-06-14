@@ -10,3 +10,7 @@ body {
 .cursor-pointer {
   cursor: pointer;
 }
+
+label {
+  color: var(--card-text-colour-default);
+}

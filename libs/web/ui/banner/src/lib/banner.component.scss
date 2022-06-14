@@ -1,5 +1,5 @@
 .banner {
-  background: var(--foreground-default);
+  background: var(--banner-background-default);
 }
 
 .theme-toggle {
@@ -8,7 +8,7 @@
 }
 
 .title-theme {
-  color: var(--primary-default);
+  color: var(--banner-header-colour-default);
 }
 
 .light-mode-icon {

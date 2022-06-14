@@ -1,0 +1,40 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@stackblitz-nx-angular/web/data-access": [
+        "libs/web/data-access/src/index.ts"
+      ],
+      "@stackblitz-nx-angular/web/features/image-gallery": [
+        "libs/web/features/image-gallery/src/index.ts"
+      ],
+      "@stackblitz-nx-angular/web/features/view-image": [
+        "libs/web/features/view-image/src/index.ts"
+      ],
+      "@stackblitz-nx-angular/web/ui/banner": [
+        "libs/web/ui/banner/src/index.ts"
+      ],
+      "@stackblitz-nx-angular/web/ui/card": ["libs/web/ui/card/src/index.ts"],
+      "@stackblitz-nx-angular/web/ui/footer": [
+        "libs/web/ui/footer/src/index.ts"
+      ],
+      "@stackblitz-nx-angular/web/ui/toggle-switch": [
+        "libs/web/ui/toggle-switch/src/index.ts"
+      ]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

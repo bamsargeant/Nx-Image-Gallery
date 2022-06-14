@@ -1,0 +1,23 @@
+<div class="container py-3">
+  <div class="row row-cols-auto justify-content-center g-3 mb-3">
+    <div class="col-12">
+      <div class="row row-cols-auto justify-content-start g-3">
+        <div class="col">
+          <button type="button" class="btn btn-colour" (click)="backToList()">
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-cols-auto justify-content-center g-3">
+    <div class="col">
+      <stackblitz-nx-angular-card
+        *ngIf="imageInfo"
+        [path]="imgSrc"
+        [imgInfo]="imageInfo"
+      ></stackblitz-nx-angular-card>
+    </div>
+  </div>
+</div>

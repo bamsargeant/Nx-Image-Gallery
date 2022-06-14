@@ -1,0 +1,60 @@
+<div class="container py-3">
+  <div class="row row-cols-auto justify-content-center g-3 mb-3">
+    <div class="col-12">
+      <div class="row row-cols-auto justify-content-center g-3">
+        <div class="col">
+          <button type="button" class="btn btn-colour" (click)="previous()">
+            Previous
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-colour" (click)="loadMore()">
+            Load More
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-colour" (click)="next()">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="row row-cols-auto justify-content-center g-3"
+    [@listAnimation]="imageList.length"
+  >
+    <div *ngFor="let imageInfo of imageList" class="col">
+      <stackblitz-nx-angular-card
+        [path]="imageInfo.thumbnail_url"
+        [imgInfo]="imageInfo"
+        (click)="viewImage(imageInfo)"
+        class="cursor-pointer"
+        [useAnimation]="true"
+      ></stackblitz-nx-angular-card>
+    </div>
+  </div>
+
+  <div class="row row-cols-auto justify-content-center g-3 mt-3">
+    <div class="col-12">
+      <div class="row row-cols-auto justify-content-center g-3">
+        <div class="col">
+          <button type="button" class="btn btn-colour" (click)="previous()">
+            Previous
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-colour" (click)="loadMore()">
+            Load More
+          </button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-colour" (click)="next()">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

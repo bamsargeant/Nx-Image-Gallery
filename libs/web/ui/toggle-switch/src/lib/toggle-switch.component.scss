@@ -1,0 +1,37 @@
+.switch-wrap {
+  cursor: pointer;
+  background: var(--slide-toggle-background-colour);
+  padding: var(--slide-toggle-padding);
+  width: var(--slide-toggle-width);
+  height: var(--slide-toggle-height);
+  border-radius: calc(var(--slide-toggle-height) / 2);
+
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+.switch {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 0fr 1fr 1fr;
+  transition: 0.2s;
+
+  // pseudo elements are treated as grid items
+  &::after {
+    content: '';
+    border-radius: 50%;
+    background: var(--slide-toggle-background-colour-selected);
+    grid-column: 2;
+    transition: background 0.2s;
+  }
+}
+
+input:checked {
+  + .switch {
+    grid-template-columns: 1fr 1fr 0fr;
+  }
+}

@@ -1,0 +1,58 @@
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+img {
+  border-radius: 5px 5px 0 0;
+  width: 100%;
+  min-height: 280px;
+  min-width: 419px;
+}
+
+// .container {
+//   padding: 2px 16px;
+// }
+
+// Bootstrap Loading Skeleton
+%loading-skeleton {
+  color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #eee;
+  border-color: #eee;
+
+  &::placeholder {
+    color: transparent;
+  }
+}
+@keyframes loading-skeleton {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.loading-skeleton {
+  pointer-events: none;
+  animation: loading-skeleton 1s infinite alternate;
+
+  img {
+    filter: grayscale(100) contrast(0%) brightness(1.8);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  li,
+  .btn,
+  label,
+  .form-control {
+    @extend %loading-skeleton;
+  }
+}

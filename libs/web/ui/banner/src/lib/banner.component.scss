@@ -1,0 +1,32 @@
+.banner {
+  background: var(--foreground-default);
+}
+
+.theme-toggle {
+  min-height: var(--slide-toggle-height);
+  min-width: var(--slide-toggle-width);
+}
+
+.title-theme {
+  color: var(--primary-default);
+}
+
+.light-mode-icon {
+  color: white;
+
+  // &.contrast {
+  //   color: gray;
+  // }
+}
+
+.dark-mode-icon {
+  color: gray;
+
+  &.contrast {
+    color: rgb(37, 37, 37);
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

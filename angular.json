@@ -1,0 +1,369 @@
+{
+  "version": 1,
+  "projects": {
+    "my-angular": {
+      "projectType": "application",
+      "root": "apps/my-angular",
+      "sourceRoot": "apps/my-angular/src",
+      "prefix": "stackblitz-nx-angular",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/my-angular",
+            "index": "apps/my-angular/src/index.html",
+            "main": "apps/my-angular/src/main.ts",
+            "polyfills": "apps/my-angular/src/polyfills.ts",
+            "tsConfig": "apps/my-angular/tsconfig.app.json",
+            "assets": [
+              "apps/my-angular/src/favicon.ico",
+              "apps/my-angular/src/assets"
+            ],
+            "styles": [
+              "apps/my-angular/src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.scss"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/my-angular/src/environments/environment.ts",
+                  "with": "apps/my-angular/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "my-angular:build:production"
+            },
+            "development": {
+              "browserTarget": "my-angular:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "apps/my-angular/proxy.conf.json"
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "my-angular:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/my-angular/src/**/*.ts",
+              "apps/my-angular/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/my-angular"],
+          "options": {
+            "jestConfig": "apps/my-angular/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "my-angular-e2e": {
+      "root": "apps/my-angular-e2e",
+      "sourceRoot": "apps/my-angular-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/my-angular-e2e/cypress.json",
+            "devServerTarget": "my-angular:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "my-angular:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/my-angular-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["my-angular"]
+    },
+    "my-nest": {
+      "root": "apps/my-nest",
+      "sourceRoot": "apps/my-nest/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/my-nest",
+            "main": "apps/my-nest/src/main.ts",
+            "tsConfig": "apps/my-nest/tsconfig.app.json",
+            "assets": ["apps/my-nest/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/my-nest/src/environments/environment.ts",
+                  "with": "apps/my-nest/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "my-nest:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/my-nest/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/my-nest"],
+          "options": {
+            "jestConfig": "apps/my-nest/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-data-access": {
+      "projectType": "library",
+      "root": "libs/web/data-access",
+      "sourceRoot": "libs/web/data-access/src",
+      "prefix": "stackblitz-nx-angular",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/data-access"],
+          "options": {
+            "jestConfig": "libs/web/data-access/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/data-access/src/**/*.ts",
+              "libs/web/data-access/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-features-image-gallery": {
+      "projectType": "library",
+      "root": "libs/web/features/image-gallery",
+      "sourceRoot": "libs/web/features/image-gallery/src",
+      "prefix": "stackblitz-nx-angular",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/features/image-gallery"],
+          "options": {
+            "jestConfig": "libs/web/features/image-gallery/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/features/image-gallery/src/**/*.ts",
+              "libs/web/features/image-gallery/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-features-view-image": {
+      "projectType": "library",
+      "root": "libs/web/features/view-image",
+      "sourceRoot": "libs/web/features/view-image/src",
+      "prefix": "stackblitz-nx-angular",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/features/view-image"],
+          "options": {
+            "jestConfig": "libs/web/features/view-image/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/features/view-image/src/**/*.ts",
+              "libs/web/features/view-image/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-ui-banner": {
+      "projectType": "library",
+      "root": "libs/web/ui/banner",
+      "sourceRoot": "libs/web/ui/banner/src",
+      "prefix": "stackblitz-nx-angular",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/ui/banner"],
+          "options": {
+            "jestConfig": "libs/web/ui/banner/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/ui/banner/src/**/*.ts",
+              "libs/web/ui/banner/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-ui-card": {
+      "projectType": "library",
+      "root": "libs/web/ui/card",
+      "sourceRoot": "libs/web/ui/card/src",
+      "prefix": "stackblitz-nx-angular",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/ui/card"],
+          "options": {
+            "jestConfig": "libs/web/ui/card/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/ui/card/src/**/*.ts",
+              "libs/web/ui/card/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-ui-footer": {
+      "projectType": "library",
+      "root": "libs/web/ui/footer",
+      "sourceRoot": "libs/web/ui/footer/src",
+      "prefix": "stackblitz-nx-angular",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/ui/footer"],
+          "options": {
+            "jestConfig": "libs/web/ui/footer/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/ui/footer/src/**/*.ts",
+              "libs/web/ui/footer/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "web-ui-toggle-switch": {
+      "projectType": "library",
+      "root": "libs/web/ui/toggle-switch",
+      "sourceRoot": "libs/web/ui/toggle-switch/src",
+      "prefix": "stackblitz-nx-angular",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/web/ui/toggle-switch"],
+          "options": {
+            "jestConfig": "libs/web/ui/toggle-switch/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/web/ui/toggle-switch/src/**/*.ts",
+              "libs/web/ui/toggle-switch/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    }
+  }
+}

@@ -1,0 +1,29 @@
+<div
+  class="card"
+  (click)="onClick($event)"
+  [ngClass]="{ 'loading-skeleton': imageLoading }"
+  [@hoverTrigger]="hoverAnimationState"
+>
+  <img
+    [src]="path"
+    [alt]="alttext"
+    class="card-img-top"
+    (load)="imageLoading = false"
+  />
+  <div *ngIf="imgInfo" class="card-body">
+    <div class="row justify-content-between">
+      <div class="col-auto">
+        <h5 class="card-title">{{ imgInfo.author }}</h5>
+      </div>
+      <div class="col-auto">
+        <h5 class="card-title text-end">{{ imgInfo.id }}</h5>
+      </div>
+    </div>
+    <!-- <p class="card-text">
+    {{imgInfo.author}}
+    {{imgInfo.width}} x {{imgInfo.height}}
+    {{imgInfo.url}}
+    {{imgInfo.download_url}}
+  </p> -->
+  </div>
+</div>

@@ -14,6 +14,7 @@ import {
   animate,
   keyframes,
 } from '@angular/animations';
+import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'stackblitz-nx-angular-card',
@@ -59,7 +60,7 @@ import {
   ],
 })
 export class CardComponent {
-  @Input() path = '';
+  @Input() path: string | SafeUrl = '';
   @Input() alttext = '';
   @Input() imgInfo: ImageInfo | undefined = undefined;
   @Input() useAnimation: boolean = false;

@@ -6,6 +6,7 @@ import {
   ImageService,
   ImageInfo,
 } from '@stackblitz-nx-angular/web/data-access';
+import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'stackblitz-nx-angular-view-image',
@@ -14,15 +15,20 @@ import {
 })
 export class ViewImageComponent implements OnInit, OnDestroy {
   public imageInfo: ImageInfo | undefined;
-  public imgSrc = '';
+  public imgSrc: string | SafeUrl = '';
 
   private id: string | undefined;
   private cachedImageInfo: ImageInfo | undefined;
   private imageInfoSubscription$: Subscription | undefined;
+  private imageSrcSubscription$: Subscription | undefined;
 
   private pageParam: number | undefined;
   private limitParam: number | undefined;
   private loadMoreCounterParam: number | undefined;
+
+  public greyscale = false;
+  public blur = 0;
+  public blurOptions = Array.from({ length: 11 }, (v, k) => k);
 
   constructor(
     private imageService: ImageService,
@@ -40,7 +46,14 @@ export class ViewImageComponent implements OnInit, OnDestroy {
     this.imageInfoSubscription$ = this.imageService.imageInfo$.subscribe(
       (result) => {
         this.imageInfo = result;
-        this.imgSrc = result?.download_url || '';
+        // this.imgSrc = result?.download_url || '';
+      }
+    );
+
+    this.imageSrcSubscription$ = this.imageService.image$.subscribe(
+      (result) => {
+        console.log(result);
+        this.imgSrc = result || '';
       }
     );
   }
@@ -48,6 +61,9 @@ export class ViewImageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.imageInfoSubscription$) {
       this.imageInfoSubscription$.unsubscribe();
+    }
+    if (this.imageSrcSubscription$) {
+      this.imageSrcSubscription$.unsubscribe();
     }
   }
 
@@ -72,6 +88,17 @@ export class ViewImageComponent implements OnInit, OnDestroy {
         limit: this.limitParam,
         load: this.loadMoreCounterParam,
       },
+    });
+  }
+
+  public onChangeBlur(newBlur: number) {
+    this.blur = newBlur;
+    this.imageService.retrieveImage({
+      id: this.imageInfo?.id,
+      width: this.imageInfo?.width,
+      height: this.imageInfo?.height,
+      blur: this.blur > 0,
+      blurValue: this.blur,
     });
   }
 }

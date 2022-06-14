@@ -1,7 +1,8 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 
 import {
@@ -22,26 +23,38 @@ export class ImageService {
   public imageInfo$: BehaviorSubject<ImageInfo | undefined> =
     new BehaviorSubject<ImageInfo | undefined>(undefined);
 
-  public image$: BehaviorSubject<string | undefined> = new BehaviorSubject<
-    string | undefined
-  >(undefined);
+  public image$: BehaviorSubject<string | SafeUrl | undefined> =
+    new BehaviorSubject<string | SafeUrl | undefined>(undefined);
 
   constructor(
     private http: HttpClient,
-    @Inject(ENVIRONMENT) private env: Environment
+    @Inject(ENVIRONMENT) private env: Environment,
+    private sanitizer: DomSanitizer
   ) {}
 
   public retrieveImage(image: Partial<ImageUrl>) {
     const url = this.buildImageUrl(image);
     const params = this.buildImageUrlParams(image);
+    const headers = this.buildImageUrlHeaders();
 
-    return this.http.get<string>(url, { params }).subscribe((imgUrl) => {
-      this.image$.next(imgUrl);
-    });
+    console.log(url);
+
+    return this.http
+      .get(url, { params, headers, responseType: 'blob' })
+      .subscribe((img) => {
+        console.log(img);
+
+        const url = this.sanitizer.bypassSecurityTrustUrl(
+          URL.createObjectURL(img)
+        );
+
+        this.image$.next(url || '');
+      });
   }
 
   public inspectImage(image: ImageInfo) {
     this.imageInfo$.next(image);
+    this.image$.next(image.download_url || '');
   }
 
   public retrieveImageInfo(image: Partial<ImageUrl>) {
@@ -49,6 +62,7 @@ export class ImageService {
 
     return this.http.get<ImageInfo>(url).subscribe((imgInfo) => {
       this.imageInfo$.next(imgInfo);
+      this.image$.next(imgInfo?.download_url || '');
     });
   }
 
@@ -153,6 +167,16 @@ export class ImageService {
     }
 
     return params;
+  }
+
+  private buildImageUrlHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    // headers = headers.append(
+    //   'Accept',
+    //   'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
+    // );
+    headers = headers.append('Content-Type', 'image/png');
+    return headers;
   }
 
   // build the Get Image url

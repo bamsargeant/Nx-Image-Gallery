@@ -34,8 +34,8 @@ export const light: Theme = {
     '--slide-toggle-background-colour': '#15273b',
     '--slide-toggle-background-colour-selected': '#ccc',
 
-    '--btn-text-colour': '#08090A',
-    '--btn-background-colour': '#ccc',
+    '--btn-text-colour': '#FFFFFF',
+    '--btn-background-colour': '#3277B3',
 
     '--main-background-default': '#FFFFFF',
     '--banner-background-default': '#DEE4E7',
@@ -82,8 +82,8 @@ export const dark: Theme = {
     '--slide-toggle-background-colour': '#ccc',
     '--slide-toggle-background-colour-selected': '#15273b',
 
-    '--btn-text-colour': '#ccc',
-    '--btn-background-colour': '#08090A',
+    '--btn-text-colour': '#FFFFFF',
+    '--btn-background-colour': '#276d89',
 
     '--main-background-default': '#222222',
     '--banner-background-default': '#37474F',

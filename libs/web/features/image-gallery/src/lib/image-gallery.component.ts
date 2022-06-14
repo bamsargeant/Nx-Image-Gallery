@@ -126,19 +126,18 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     this.queryParamMap$ = this.route.queryParamMap.subscribe(
       (queryParamMap) => {
         const pageParam = Number(queryParamMap.get('page'));
-        if (pageParam != this.page) this.page = pageParam;
+        if (pageParam) this.page = pageParam;
 
         const limitParam = Number(queryParamMap.get('limit'));
-        if (limitParam != this.limit) this.limit = limitParam;
+        if (limitParam) this.limit = limitParam;
 
         const loadMoreCounterParam = Number(queryParamMap.get('load'));
-        if (loadMoreCounterParam != this.loadMoreCounter)
-          this.loadMoreCounter = loadMoreCounterParam;
+        if (loadMoreCounterParam) this.loadMoreCounter = loadMoreCounterParam;
 
         this.loadImages(false, true, 0);
 
         const indexParam = Number(queryParamMap.get('index'));
-        if (indexParam != this.scrollToElementIndex) {
+        if (indexParam) {
           this.scrollToElementIndex = indexParam;
           this.scrolling = false;
           this.scrollToElement(indexParam);

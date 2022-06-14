@@ -67,7 +67,6 @@ export class ViewImageComponent implements OnInit, OnDestroy {
 
     this.imageSrcSubscription$ = this.imageService.image$.subscribe(
       (result) => {
-        console.log(result);
         this.imgSrc = result || '';
         this.loading = false;
       }

@@ -4,8 +4,8 @@
   border-radius: 5px;
   z-index: 0;
   position: relative;
-  background: var(--foreground-default);
-  color: red;
+  background: var(--card-background-default);
+  color: var(--card-text-colour-default);
 }
 
 img {

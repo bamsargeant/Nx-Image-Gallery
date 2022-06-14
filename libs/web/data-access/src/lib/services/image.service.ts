@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, SecurityContext } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 import {
   ENVIRONMENT,
@@ -44,8 +44,12 @@ export class ImageService {
       .subscribe((img) => {
         console.log(img);
 
-        const url = this.sanitizer.sanitize(
-          SecurityContext.URL,
+        // const url = this.sanitizer.sanitize(
+        //   SecurityContext.URL,
+        //   URL.createObjectURL(img)
+        // );
+
+        const url = this.sanitizer.bypassSecurityTrustUrl(
           URL.createObjectURL(img)
         );
 

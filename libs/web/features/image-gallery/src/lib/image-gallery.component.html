@@ -1,4 +1,7 @@
-<div *ngIf="loading; else content" class="d-flex justify-content-center py-3">
+<div
+  *ngIf="loading; else content"
+  class="d-flex justify-content-center py-3 h-100 align-items-center"
+>
   <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
@@ -26,8 +29,6 @@
               Next
             </button>
           </div>
-          <div class="col">{{ scrollToIndexUpdated }}</div>
-          <div class="col">{{ indexParam }}</div>
 
           <div class="col">
             <label for="limitSelect" class="d-inline-block pl-1 semi-bold"

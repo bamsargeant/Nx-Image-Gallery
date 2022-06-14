@@ -36,6 +36,18 @@ export const light: Theme = {
 
     '--btn-text-colour': '#08090A',
     '--btn-background-colour': '#ccc',
+
+    '--main-background-default': '#FFFFFF',
+    '--banner-background-default': '#DEE4E7',
+    '--footer-background-default': '#DEE4E7',
+    '--card-background-default': '#DEE4E7',
+
+    '--banner-header-colour-default': '#222222',
+    '--card-text-colour-default': '#222222',
+    '--footer-text-colour-default': '#222222',
+
+    '--header-height': '4.8rem',
+    '--footer-height': '6rem',
   },
 };
 
@@ -72,5 +84,17 @@ export const dark: Theme = {
 
     '--btn-text-colour': '#ccc',
     '--btn-background-colour': '#08090A',
+
+    '--main-background-default': '#222222',
+    '--banner-background-default': '#37474F',
+    '--footer-background-default': '#37474F',
+    '--card-background-default': '#37474F',
+
+    '--banner-header-colour-default': '#FFFFFF',
+    '--card-text-colour-default': '#FFFFFF',
+    '--footer-text-colour-default': '#FFFFFF',
+
+    '--header-height': '4.8rem',
+    '--footer-height': '6rem',
   },
 };

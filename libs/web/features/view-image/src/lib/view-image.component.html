@@ -1,5 +1,5 @@
 <div class="container py-3">
-  <div class="row justify-content-center g-3 mb-3">
+  <div class="row justify-content-center align-items-end g-3 mb-3">
     <div class="col">
       <div class="row row-cols-auto justify-content-start g-3">
         <div class="col">
@@ -9,6 +9,29 @@
         </div>
       </div>
     </div>
+
+    <div class="col">{{ indexParam }}</div>
+
+    <div class="col">
+      <div class="row row-cols-auto justify-content-start g-3">
+        <div class="col">
+          <div class="form-check form-switch">
+            <label class="form-check-label" for="greyscaleSwitch"
+              >Greyscale</label
+            >
+            <input
+              [(ngModel)]="greyscale"
+              (ngModelChange)="onChangeImageOptions()"
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="greyscaleSwitch"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="col">
       <div class="row row-cols-auto justify-content-start g-3">
         <div class="col">
@@ -17,8 +40,8 @@
           >
 
           <select
-            [ngModel]="blur"
-            (ngModelChange)="onChangeBlur($event)"
+            [(ngModel)]="blur"
+            (ngModelChange)="onChangeImageOptions()"
             class="form-select"
             aria-label="Default select example"
             id="blurSelect"
@@ -30,6 +53,40 @@
         </div>
       </div>
     </div>
+
+    <div class="col">
+      <div class="row row-cols-auto justify-content-start g-3">
+        <div class="col">
+          <label for="widthInput" class="form-label">Width</label>
+          <input
+            type="number"
+            class="form-control"
+            id="widthInput"
+            [(ngModel)]="width"
+            (ngModelChange)="onChangeDimensions()"
+            [max]="imageInfo?.width || 0"
+            [min]="0"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="row row-cols-auto justify-content-start g-3">
+        <div class="col">
+          <label for="heightInput" class="form-label">Height</label>
+          <input
+            type="number"
+            class="form-control"
+            id="heightInput"
+            [(ngModel)]="height"
+            (ngModelChange)="onChangeDimensions()"
+            [max]="imageInfo?.height || 0"
+            [min]="0"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="row row-cols-auto justify-content-center g-3">
@@ -38,6 +95,7 @@
         *ngIf="imageInfo"
         [path]="imgSrc"
         [imgInfo]="imageInfo"
+        [imageLoading]="loading"
       ></stackblitz-nx-angular-card>
     </div>
   </div>

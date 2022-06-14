@@ -8,7 +8,9 @@ import {
   style,
   stagger,
   animate,
+  animateChild,
 } from '@angular/animations';
+import { ViewportScroller } from '@angular/common';
 
 import {
   ImageService,
@@ -22,7 +24,7 @@ const listAnimation = trigger('listAnimation', [
       [
         style({ opacity: 0, transform: 'translateY(100%)' }),
         stagger(
-          '250ms',
+          '100ms',
           animate(
             '1200ms ease-out',
             style({ opacity: 1, transform: 'translateY(0%)' })
@@ -38,6 +40,7 @@ const listAnimation = trigger('listAnimation', [
           '400ms ease-out',
           style({ opacity: 0, transform: 'translateY(100%)' })
         ),
+        animateChild(),
       ],
       {
         optional: true,
@@ -58,6 +61,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
   public imageListSubscription$!: Subscription;
 
   public loading = true;
+  public scrolling = false;
 
   private loadMoreCounter = 0;
   public page = 1;
@@ -66,20 +70,27 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
   public thumbnailHeight = 280;
   public appendImages = false;
 
+  public scrollToIndexUpdated = false;
+  public scrollToElementIndex = 0;
+  public indexParam = 0;
+
   public limitOptions = [3, 5, 10, 25, 100];
-  public pageOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  public pageOptions = Array.from({ length: 10 }, (v, k) => k + 1);
 
   constructor(
     private imageService: ImageService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private viewportScroller: ViewportScroller
   ) {
     this.imageListSubscription$ = this.imageService.imageList$.subscribe(
       (e) => {
         // continuously add to the list
         if (this.appendImages) {
+          this.scrollToElementIndex = this.imageList.length;
           this.imageList.push(...e);
         } else {
+          this.scrollToElementIndex = 0;
           this.imageList = e;
           this.appendImages = true;
         }
@@ -89,8 +100,23 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         );
 
         this.loading = false;
+
+        if (this.scrollToIndexUpdated && this.scrollToElementIndex > 0)
+          this.scrollToElement(this.scrollToElementIndex);
       }
     );
+  }
+
+  scrollToElement(index: number | string) {
+    if (!this.scrolling) {
+      this.scrolling = true;
+      console.log('scrolling to: ' + index);
+
+      setTimeout(() => {
+        this.viewportScroller.scrollToAnchor('image-card-' + index.toString());
+        this.scrolling = false;
+      }, 1000);
+    }
   }
 
   ngOnInit(): void {
@@ -105,7 +131,14 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     );
     if (loadMoreCounterParam) this.loadMoreCounter = loadMoreCounterParam;
 
-    this.loadImages(false, 0);
+    const indexParam = Number(this.route.snapshot.queryParamMap.get('index'));
+    if (indexParam) {
+      this.scrollToElementIndex = indexParam;
+      this.scrolling = false;
+    }
+
+    this.loadImages(false, true, 0);
+    this.scrollToElement(indexParam);
   }
 
   ngOnDestroy(): void {
@@ -114,7 +147,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     }
   }
 
-  public viewImage(imageInfo: any) {
+  public viewImage(imageInfo: any, index: number) {
     console.log('View Image');
     this.imageService.inspectImage(imageInfo);
     this.router.navigate(['/', imageInfo.id], {
@@ -122,15 +155,17 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         page: this.page,
         limit: this.limit,
         load: this.loadMoreCounter,
+        index: index,
       },
     });
   }
 
   public loadImages(
     appendImages: boolean = false,
+    loading: boolean = true,
     loadCount: number = this.loadMoreCounter
   ) {
-    this.loading = true;
+    this.loading = loading;
 
     this.appendImages = appendImages;
 
@@ -145,8 +180,9 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
   }
 
   public loadMore() {
+    this.scrollToIndexUpdated = true;
     this.loadMoreCounter++;
-    this.loadImages(true);
+    this.loadImages(true, false);
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -154,6 +190,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         page: this.page,
         limit: this.limit,
         load: this.loadMoreCounter,
+        index: this.scrollToElementIndex,
       },
       queryParamsHandling: 'merge', // remove to replace all query params by provided
     });
@@ -163,7 +200,8 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     this.imageList = [];
     this.page += this.loadMoreCounter + 1;
     this.loadMoreCounter = 0;
-    this.loadImages(false, 0);
+    this.loadImages(false, true, 0);
+    this.scrollToElementIndex = 0;
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -171,6 +209,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         page: this.page,
         limit: this.limit,
         load: this.loadMoreCounter,
+        index: this.scrollToElementIndex,
       },
       queryParamsHandling: 'merge', // remove to replace all query params by provided
     });
@@ -182,8 +221,9 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
       this.page--;
     }
     this.loadMoreCounter = 0;
+    this.scrollToElementIndex = 0;
 
-    this.loadImages(false, 0);
+    this.loadImages(false, true, 0);
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -191,6 +231,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         page: this.page,
         limit: this.limit,
         load: this.loadMoreCounter,
+        index: this.scrollToElementIndex,
       },
       queryParamsHandling: 'merge', // remove to replace all query params by provided
     });
@@ -198,7 +239,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
 
   public onChangeLimit(newLimit: number) {
     this.limit = newLimit;
-    this.loadImages(false, 0);
+    this.loadImages(false, true, 0);
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -206,6 +247,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         page: this.page,
         limit: this.limit,
         load: this.loadMoreCounter,
+        index: this.scrollToElementIndex,
       },
       queryParamsHandling: 'merge', // remove to replace all query params by provided
     });
@@ -213,7 +255,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
 
   public onChangePage(newPage: number) {
     this.page = newPage;
-    this.loadImages(false, 0);
+    this.loadImages(false, true, 0);
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -221,8 +263,17 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         page: this.page,
         limit: this.limit,
         load: this.loadMoreCounter,
+        index: this.scrollToElementIndex,
       },
       queryParamsHandling: 'merge', // remove to replace all query params by provided
     });
+  }
+
+  public onItemFocus(imageInfo: Partial<ImageInfo>) {
+    imageInfo.focused = true;
+  }
+
+  public offItemFocus(imageInfo: Partial<ImageInfo>) {
+    imageInfo.focused = false;
   }
 }

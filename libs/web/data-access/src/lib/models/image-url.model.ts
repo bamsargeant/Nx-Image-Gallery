@@ -1,7 +1,7 @@
 export interface ImageUrl {
   id?: string;
   width?: number;
-  height?: number;
+  height?: number | undefined | null;
   maxWidth?: number;
   maxHeight?: number;
   seed?: string;

@@ -6,7 +6,8 @@
 >
   <img
     [src]="path"
-    [alt]="alttext"
+    alt="Photo by {{ imgInfo?.author }} - Id {{ imgInfo?.id }}"
+    title="Photo by {{ imgInfo?.author }} - Id {{ imgInfo?.id }}"
     class="card-img-top"
     (load)="imageLoading = false"
   />

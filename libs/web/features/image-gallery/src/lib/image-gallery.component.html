@@ -18,7 +18,7 @@
           </div>
           <div class="col">
             <button type="button" class="btn btn-colour" (click)="loadMore()">
-              Load More
+              Load More Images
             </button>
           </div>
           <div class="col">
@@ -26,6 +26,9 @@
               Next
             </button>
           </div>
+          <div class="col">{{ scrollToIndexUpdated }}</div>
+          <div class="col">{{ indexParam }}</div>
+
           <div class="col">
             <label for="limitSelect" class="d-inline-block pl-1 semi-bold"
               >Limit</label
@@ -69,13 +72,23 @@
       class="row row-cols-auto justify-content-center g-4 g-lg-3"
       [@listAnimation]="imageList.length"
     >
-      <div *ngFor="let imageInfo of imageList" class="col">
+      <div
+        *ngFor="let imageInfo of imageList; let i = index"
+        [attr.data-index]="'image-card-' + i"
+        [attr.id]="'image-card-' + i"
+        class="col"
+        tabindex="0"
+        (keyup.enter)="viewImage(imageInfo, i)"
+        (focus)="onItemFocus(imageInfo)"
+        (focusout)="offItemFocus(imageInfo)"
+      >
         <stackblitz-nx-angular-card
           [path]="imageInfo.thumbnail_url"
           [imgInfo]="imageInfo"
-          (click)="viewImage(imageInfo)"
+          (click)="viewImage(imageInfo, i)"
           class="cursor-pointer"
           [useAnimation]="true"
+          [focused]="imageInfo?.focused ?? false"
         ></stackblitz-nx-angular-card>
       </div>
     </div>

@@ -4,6 +4,8 @@ import {
   HostListener,
   Input,
   Output,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { ImageInfo } from '@stackblitz-nx-angular/web/data-access';
 import {
@@ -59,11 +61,13 @@ import { SafeUrl } from '@angular/platform-browser';
     ]),
   ],
 })
-export class CardComponent {
+export class CardComponent implements OnChanges {
   @Input() path: string | SafeUrl = '';
   @Input() alttext = '';
   @Input() imgInfo: ImageInfo | undefined = undefined;
   @Input() useAnimation: boolean = false;
+  @Input() imageLoading: boolean = true;
+  @Input() focused: boolean = false;
 
   @Output() click: EventEmitter<any> = new EventEmitter<any>();
   onClick(e: any) {
@@ -98,7 +102,13 @@ export class CardComponent {
     }
   }
 
-  imageLoading = true;
-
   constructor() {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes?.focused?.currentValue) {
+      this.hoverAnimationState = this.hoverStates.mouseEnter;
+    } else {
+      this.hoverAnimationState = '';
+    }
+  }
 }

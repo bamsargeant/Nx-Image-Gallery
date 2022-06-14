@@ -189,19 +189,19 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
   public loadMore() {
     this.scrollToIndexUpdated = true;
     this.loadMoreCounter++;
-    // this.loadImages(true, false);
+    this.loadImages(true, false);
     this.appendImages = true;
 
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        page: this.page,
-        limit: this.limit,
-        load: this.loadMoreCounter,
-        index: this.scrollToElementIndex,
-      },
-      queryParamsHandling: 'merge', // remove to replace all query params by provided
-    });
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParams: {
+    //     page: this.page,
+    //     limit: this.limit,
+    //     load: this.loadMoreCounter,
+    //     index: this.scrollToElementIndex,
+    //   },
+    //   queryParamsHandling: 'merge', // remove to replace all query params by provided
+    // });
   }
 
   public next() {
@@ -251,6 +251,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     this.limit = newLimit;
     // this.loadImages(false, true, 0);
     this.appendImages = false;
+    this.loadMoreCounter = 0;
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -268,6 +269,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     this.page = newPage;
     // this.loadImages(false, true, 0);
     this.appendImages = false;
+    this.loadMoreCounter = 0;
 
     this.router.navigate([], {
       relativeTo: this.route,

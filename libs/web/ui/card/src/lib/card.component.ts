@@ -27,7 +27,7 @@ import { SafeUrl } from '@angular/platform-browser';
       state(
         'in',
         style({
-          transform: 'scale(1.2)',
+          transform: 'scale(1.15)',
           zIndex: 9999,
           position: 'relative',
         })
@@ -48,7 +48,7 @@ import { SafeUrl } from '@angular/platform-browser';
         'out => in',
         animate(
           '250ms ease-in-out',
-          style({ transform: 'scale(1.2)', zIndex: 9999 })
+          style({ transform: 'scale(1.15)', zIndex: 9999 })
         )
       ),
       transition(

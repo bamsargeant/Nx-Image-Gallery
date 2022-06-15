@@ -25,12 +25,20 @@
         </h2>
       </div>
     </div>
-    <p *ngIf="showInfo" class="card-text">
-      <strong>Dimensions:</strong> {{ imgInfo.width }} x {{ imgInfo.height }}
-      <br />
-      <a href="{{ imgInfo.url }}"
-        ><span *ngIf="!imageLoading">Original Url</span></a
-      >
-    </p>
+    <div *ngIf="showInfo" class="row justify-content-between">
+      <div class="col-auto">
+        <p class="card-text">
+          <strong>Dimensions:</strong> {{ imgInfo.width }} x
+          {{ imgInfo.height }}
+        </p>
+      </div>
+      <div class="col-auto">
+        <p class="card-text">
+          <a href="{{ imgInfo.url }}"
+            ><span *ngIf="!imageLoading">Original Url</span></a
+          >
+        </p>
+      </div>
+    </div>
   </div>
 </div>

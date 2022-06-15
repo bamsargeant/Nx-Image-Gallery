@@ -17,6 +17,7 @@ import {
   ImageInfo,
 } from '@stackblitz-nx-angular/web/data-access';
 
+// Define the list item enter animation
 const listAnimation = trigger('listAnimation', [
   transition('* <=> *', [
     query(
@@ -90,18 +91,28 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         if (this.appendImages) {
           this.scrollToElementIndex = this.imageList.length;
           this.imageList.push(...e);
-        } else {
+        }
+        // reset the list and repopulate
+        else {
           this.scrollToElementIndex = 0;
           this.imageList = e;
           this.appendImages = true;
         }
 
+        if (this.imageList.length == 0) {
+          this.previous();
+          return;
+        }
+
+        // when coming back from a view image page, the list items can be unordered due to async
+        // reorder the list
         this.imageList = this.imageList.sort((a, b) =>
           a.id.localeCompare(b.id)
         );
 
         this.loading = false;
 
+        // scroll to the selected item
         if (this.scrollToIndexUpdated && this.scrollToElementIndex > 0) {
           this.scrollToElement(this.scrollToElementIndex);
         }
@@ -109,6 +120,11 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     );
   }
 
+  setPageOptions(count: number) {
+    this.pageOptions = Array.from({ length: count }, (v, k) => k + 1);
+  }
+
+  // scroll to a defined item
   scrollToElement(index: number | string) {
     if (!this.scrolling) {
       this.scrolling = true;
@@ -121,6 +137,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // constantly listen to param changes
     this.queryParamMap$ = this.route.queryParamMap.subscribe(
       (queryParamMap) => {
         const pageParam = Number(queryParamMap.get('page'));
@@ -145,6 +162,8 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // free up memory by unsubscribing
+    // note: angular does this automatically for most subscriptions
     if (this.imageListSubscription$) {
       this.imageListSubscription$.unsubscribe();
     }
@@ -153,6 +172,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     }
   }
 
+  // select an image to view
   public viewImage(imageInfo: any, index: number) {
     this.imageService.inspectImage(imageInfo);
     this.router.navigate(['/', imageInfo.id], {
@@ -165,6 +185,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     });
   }
 
+  // trigger the image service to get images
   public loadImages(
     appendImages: boolean = false,
     loading: boolean = true,
@@ -174,6 +195,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
 
     this.appendImages = appendImages;
 
+    // loop through the load more counter to get all the images when coming back from the view image page
     for (let index = loadCount; index <= this.loadMoreCounter; index++) {
       this.imageService.retrieveList(
         this.thumbnailWidth,
@@ -203,12 +225,27 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
   }
 
   public next() {
-    this.imageList = [];
+    const currentPage = this.page;
+    // add the load more counter to the page count so the user doesnt see the same images
     this.page += this.loadMoreCounter + 1;
+
+    if (
+      this.page > Math.max(...this.pageOptions) &&
+      this.imageList.length != 0
+    ) {
+      this.setPageOptions(this.page);
+    } else if (this.imageList.length == 0) {
+      this.page = currentPage;
+      this.setPageOptions(this.page);
+      return;
+    }
+
     this.loadMoreCounter = 0;
     // this.loadImages(false, true, 0);
     this.appendImages = false;
     this.scrollToElementIndex = 0;
+
+    this.imageList = [];
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -245,6 +282,7 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
     });
   }
 
+  // manually change the limit dropdown
   public onChangeLimit(newLimit: number) {
     this.limit = newLimit;
     // this.loadImages(false, true, 0);

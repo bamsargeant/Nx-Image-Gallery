@@ -103,8 +103,6 @@ export class ImageGalleryComponent implements OnInit, OnDestroy {
         this.loading = false;
 
         if (this.scrollToIndexUpdated && this.scrollToElementIndex > 0) {
-          console.log(this.scrollToIndexUpdated);
-          console.log(this.scrollToElementIndex);
           this.scrollToElement(this.scrollToElementIndex);
         }
       }

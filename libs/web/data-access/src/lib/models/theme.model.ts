@@ -46,7 +46,7 @@ export const light: Theme = {
     '--card-text-colour-default': '#222222',
     '--footer-text-colour-default': '#222222',
 
-    '--header-height': '4.8rem',
+    '--header-height': '5.51rem',
     '--footer-height': '6rem',
   },
 };
@@ -94,7 +94,7 @@ export const dark: Theme = {
     '--card-text-colour-default': '#FFFFFF',
     '--footer-text-colour-default': '#FFFFFF',
 
-    '--header-height': '4.8rem',
+    '--header-height': '5.5rem',
     '--footer-height': '6rem',
   },
 };

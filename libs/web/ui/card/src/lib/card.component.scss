@@ -11,8 +11,12 @@
 img {
   border-radius: 5px 5px 0 0;
   width: 100%;
+}
+
+.list-card {
   min-height: 280px;
   min-width: 419px;
+  object-fit: cover;
 }
 
 // .container {

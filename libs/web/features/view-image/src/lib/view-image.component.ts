@@ -47,6 +47,7 @@ export class ViewImageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id') || undefined;
     this.pageParam = Number(this.route.snapshot.queryParamMap.get('page'));
     this.limitParam = Number(this.route.snapshot.queryParamMap.get('limit'));
     this.loadMoreCounterParam = Number(
@@ -71,6 +72,8 @@ export class ViewImageComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     );
+
+    this.loadImage();
   }
 
   ngOnDestroy(): void {
@@ -83,11 +86,8 @@ export class ViewImageComponent implements OnInit, OnDestroy {
   }
 
   public loadImage() {
-    this.imageService.imageInfo$.pipe(
-      map((imageInfoResult: any) => {
-        this.imageInfo = imageInfoResult;
-      })
-    );
+    console.log('Loading Image');
+    console.log(this.id);
 
     if (this.cachedImageInfo && this.cachedImageInfo.id == this.id) {
       this.imageInfo = this.cachedImageInfo;
